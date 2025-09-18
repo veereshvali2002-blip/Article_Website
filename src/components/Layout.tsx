@@ -17,18 +17,30 @@ export function Layout({ children, showAdminNav = false }: LayoutProps) {
     navigate('/')
   }
 
+  // Triple-click logic for logo
+  const clickTimes = React.useRef<number[]>([])
+  const logoClickHandler = () => {
+    const now = Date.now()
+    clickTimes.current = clickTimes.current.filter(t => now - t < 2000)
+    clickTimes.current.push(now)
+    if (clickTimes.current.length === 3) {
+      clickTimes.current = []
+      navigate('/admin')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center space-x-2">
+            <div onClick={logoClickHandler} style={{ cursor: 'pointer' }} className="flex items-center space-x-2 select-none">
               <Newspaper className="h-8 w-8 text-indigo-600" />
               <span className="text-xl font-bold text-gray-900">NewsHub</span>
-            </Link>
+            </div>
 
             <nav className="flex items-center space-x-4">
-              {showAdminNav && user ? (
+              {showAdminNav && user && (
                 <>
                   <Link
                     to="/admin"
@@ -47,13 +59,6 @@ export function Layout({ children, showAdminNav = false }: LayoutProps) {
                     </button>
                   </div>
                 </>
-              ) : (
-                <Link
-                  to="/admin/login"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                >
-                  Admin Login
-                </Link>
               )}
             </nav>
           </div>
