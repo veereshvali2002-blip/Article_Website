@@ -19,13 +19,27 @@ export function Layout({ children, showAdminNav = false }: LayoutProps) {
 
   // Triple-click logic for logo
   const clickTimes = React.useRef<number[]>([])
+  const clickTimeout = React.useRef<NodeJS.Timeout | null>(null)
   const logoClickHandler = () => {
     const now = Date.now()
     clickTimes.current = clickTimes.current.filter(t => now - t < 2000)
     clickTimes.current.push(now)
     if (clickTimes.current.length === 3) {
       clickTimes.current = []
+      if (clickTimeout.current) {
+        clearTimeout(clickTimeout.current)
+        clickTimeout.current = null
+      }
       navigate('/admin')
+    } else if (clickTimes.current.length === 1) {
+      if (clickTimeout.current) clearTimeout(clickTimeout.current)
+      clickTimeout.current = setTimeout(() => {
+        if (clickTimes.current.length === 1) {
+          navigate('/')
+        }
+        clickTimes.current = []
+        clickTimeout.current = null
+      }, 500)
     }
   }
 
