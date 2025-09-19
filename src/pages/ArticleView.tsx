@@ -73,7 +73,7 @@ export function ArticleView() {
 
   return (
     <Layout>
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white rounded-2xl shadow-md mt-10 mb-16">
         {/* Breadcrumb */}
         <div className="mb-8">
           <Link
@@ -86,12 +86,11 @@ export function ArticleView() {
         </div>
 
         {/* Article Header */}
-        <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+        <header className="mb-10">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight tracking-tight">
             {article.title}
           </h1>
-          
-          <div className="flex items-center text-sm text-gray-500 space-x-6 mb-8">
+          <div className="flex items-center text-base text-gray-500 space-x-6 mb-6">
             <div className="flex items-center space-x-2">
               <Calendar className="h-4 w-4" />
               <span>{format(new Date(article.created_at), 'MMMM dd, yyyy')}</span>
@@ -101,9 +100,8 @@ export function ArticleView() {
               <span>{Math.ceil(article.content.split(' ').length / 200)} min read</span>
             </div>
           </div>
-
           {article.featured_image_url && (
-            <div className="mb-8 rounded-xl overflow-hidden">
+            <div className="mb-8 rounded-2xl overflow-hidden shadow-sm">
               <img
                 src={article.featured_image_url}
                 alt={article.title}
@@ -115,7 +113,7 @@ export function ArticleView() {
 
         {/* Article Content */}
         <div 
-          className="prose prose-lg max-w-none mb-8 text-gray-800 leading-relaxed"
+          className="prose prose-lg max-w-none mb-10 text-gray-800 leading-relaxed prose-img:rounded-xl prose-img:mx-auto prose-img:w-full prose-img:h-auto"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
 
